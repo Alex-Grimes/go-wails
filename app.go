@@ -2,8 +2,20 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
+
+const BaseUrl = "https://api.github.com"
+
+var githubResponse APIResponse
+
+type APIResponse []interface{}
+type Gist struct {
+	Description string      `json:"description"`
+	Public      bool        `json:"public"`
+	Files       interface{} `json:"files"`
+}
 
 // App struct
 type App struct {
@@ -13,6 +25,18 @@ type App struct {
 // NewApp creates a new App application struct
 func NewApp() *App {
 	return &App{}
+}
+
+func (a *App) GetPublicRepositories() (APIResponse, error) {
+	url := fmt.Sprintf("%s/repositories", BaseUrl)
+	response, err := MakeGetRequest(url, "")
+
+	if err != nil {
+		return nil, err
+	}
+
+	json.Unmarshal(response, &githubResponse)
+	return githubResponse, nil
 }
 
 // startup is called when the app starts. The context is saved
