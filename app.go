@@ -75,6 +75,17 @@ func (a *App) GetGistsForAuthenticatedUser(token string) (APIResponse, error) {
 	return githubResponse, nil
 }
 
+func (a *App) GetMoreInformationFromURL(url, token string) (APIResponse, error) {
+	response, err := MakeGetRequest(url, token)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json.Unmarshal(response, &githubResponse)
+	return githubResponse, nil
+}
+
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
