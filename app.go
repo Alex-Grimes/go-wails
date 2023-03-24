@@ -51,6 +51,18 @@ func (a *App) GetPublicGists() (APIResponse, error) {
 	return githubResponse, nil
 }
 
+func (a *App) GetPublicRepositoriesForAuthenticatedUser(token string) (APIResponse, error) {
+	url := fmt.Sprintf("%s/user/repos?type=private", BaseUrl)
+	response, err := MakeGetRequest(url, token)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json.Unmarshal(response, &githubResponse)
+	return githubResponse, nil
+}
+
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
