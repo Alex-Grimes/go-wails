@@ -1,5 +1,7 @@
 # README
 
+Fun project for exploring wails for quick creation of desktop apps across multiple platforms
+
 ## About
 
 This is the official Wails React template.
