@@ -86,6 +86,30 @@ func (a *App) GetMoreInformationFromURL(url, token string) (APIResponse, error) 
 	return githubResponse, nil
 }
 
+func (a *App) GetGistContent(url, token string) (string, error) {
+	githubResponse, err := MakeGetRequest(url, token)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(githubResponse), nil
+}
+
+func (a *App) CreateNewGist(gist Gist, token string) (interface{}, error) {
+	var githubResponse interface{}
+
+	requestBody, _ := json.Marshal(gist)
+	url := fmt.Sprintf("%s/gists", BaseUrl)
+	response, err := MakePostRequest(url, token, requestBody)
+
+	if err != nil {
+		return nil, err
+	}
+	json.Unmarshal(response, &githubResponse)
+	return githubResponse, nil
+}
+
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
